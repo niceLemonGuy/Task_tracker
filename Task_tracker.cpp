@@ -4,16 +4,13 @@
 #include <map>
 using namespace std;
 
-// Перечислимый тип для статуса задачи
 enum class TaskStatus {
-    NEW,          // новая
-    IN_PROGRESS,  // в разработке
-    TESTING,      // на тестировании
-    DONE          // завершена
+    NEW,
+    IN_PROGRESS,
+    TESTING,
+    DONE
 };
 
-// Объявляем тип-синоним для map<TaskStatus, int>,
-// позволяющего хранить количество задач каждого статуса
 using TasksInfo = map<TaskStatus, int>;
 
 bool CheckTaskStatus(TasksInfo tasks, TaskStatus status) {
@@ -40,18 +37,14 @@ TasksInfo operator + (TasksInfo& lhs, TasksInfo& rhs) {
 
 class TeamTasks {
     public:
-    // Получить статистику по статусам задач конкретного разработчика
     const TasksInfo& GetPersonTasksInfo(const string& person) const {
         return personTasks.at(person);
     }
-
-    // Добавить новую задачу (в статусе NEW) для конкретного разработчитка
+    
     void AddNewTask(const string& person) {
         ++personTasks[person][TaskStatus::NEW];
     }
 
-    // Обновить статусы по данному количеству задач конкретного разработчика,
-    // подробности см. ниже
     tuple<TasksInfo, TasksInfo> PerformPersonTasks(
       const string& person, int task_count) {
         TasksInfo updated, remained;
@@ -105,9 +98,6 @@ class TeamTasks {
     map<string, map<TaskStatus, int>> personTasks;
 };
 
-// Принимаем словарь по значению, чтобы иметь возможность
-// обращаться к отсутствующим ключам с помощью [] и получать 0,
-// не меняя при этом исходный словарь
 void PrintTasksInfo(TasksInfo tasks_info) {
     cout << tasks_info[TaskStatus::NEW] << " new tasks" <<
     ", " << tasks_info[TaskStatus::IN_PROGRESS] << " tasks in progress" <<
